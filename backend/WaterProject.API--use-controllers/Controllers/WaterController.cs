@@ -4,8 +4,8 @@ using WaterProject.API.Data;
 
 namespace WaterProject.API.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
 
     public class WaterController : ControllerBase
     {
