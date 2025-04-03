@@ -17,6 +17,7 @@
     <None Update="WaterProject.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+
   </ItemGroup>
 
 </Project>
