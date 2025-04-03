@@ -14,7 +14,9 @@ builder.Services.AddDbContext<WaterDbContext>(options =>
 builder.Services.AddCors(options => 
     options.AddPolicy("AllowReactAppBlah",
     policy => {
-        policy.WithOrigins("http://localhost:3000") // Fixed the lambda expression error
+        policy.WithOrigins(
+            "http://localhost:3000", 
+            "https://calm-sky-0e6a9bc1e.6.azurestaticapps.net")
             .AllowAnyMethod()
             .AllowAnyHeader();
     }));
