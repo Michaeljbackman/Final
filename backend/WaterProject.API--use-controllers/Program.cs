@@ -4,14 +4,20 @@ using WaterProject.API.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers(); // <-- THIS is what was missing
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<WaterDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WaterConnection")));
 
-builder.Services.AddCors();
+builder.Services.AddCors(options => 
+    options.AddPolicy("AllowReactAppBlah",
+    policy => {
+        policy.WithOrigins("http://localhost:3000") // Fixed the lambda expression error
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    }));
 
 var app = builder.Build();
 
@@ -22,10 +28,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x.WithOrigins("http://localhost:3000"));
+app.UseCors("AllowReactAppBlah");
 
 app.UseHttpsRedirection();
 
-app.MapControllers(); // <-- Now this will work!
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
