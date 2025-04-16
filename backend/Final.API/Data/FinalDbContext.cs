@@ -8,5 +8,5 @@ public class WaterDbContext : DbContext
     {
     }
     
-    public DbSet<Project> Projects { get; set; }
+    public DbSet<Entertainer> Projects { get; set; }
 }
