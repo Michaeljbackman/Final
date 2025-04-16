@@ -46,21 +46,44 @@ function EntertainerDetailsPage() {
   if (!entertainer) return <p>No entertainer found.</p>;
 
   return (
-    <div className="container mt-4">
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100vw",
+        margin: 0,
+        padding: 0,
+        overflow: "hidden",
+        backgroundColor: "#1e1e1e",
+        color: "white",
+        textAlign: "center",
+      }}
+    >
       <WelcomeBand />
-      <h2>{entertainer.entStageName} - Details</h2>
-      <ul className="list-group">
-        <li className="list-group-item"><strong>Address:</strong> {entertainer.entStreetAddress}, {entertainer.entCity}, {entertainer.entState} {entertainer.entZipCode}</li>
-        <li className="list-group-item"><strong>Phone:</strong> {entertainer.entPhoneNumber}</li>
-        <li className="list-group-item"><strong>Email:</strong> {entertainer.entEMailAddress}</li>
-        <li className="list-group-item"><strong>Website:</strong> {entertainer.entWebPage}</li>
-        <li className="list-group-item"><strong>Date Entered:</strong> {new Date(entertainer.dateEntered).toLocaleDateString()}</li>
-      </ul>
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "2rem" }}>
+        <h2 className="mb-4">{entertainer.entStageName} - Details</h2>
+        <ul className="list-group mb-4">
+          <li className="list-group-item">
+            <strong>Address:</strong> {entertainer.entStreetAddress}, {entertainer.entCity}, {entertainer.entState} {entertainer.entZipCode}
+          </li>
+          <li className="list-group-item">
+            <strong>Phone:</strong> {entertainer.entPhoneNumber}
+          </li>
+          <li className="list-group-item">
+            <strong>Email:</strong> {entertainer.entEMailAddress}
+          </li>
+          <li className="list-group-item">
+            <strong>Website:</strong> {entertainer.entWebPage}
+          </li>
+          <li className="list-group-item">
+            <strong>Date Entered:</strong> {new Date(entertainer.dateEntered).toLocaleDateString()}
+          </li>
+        </ul>
 
-      <div className="mt-4 d-flex gap-3">
-        <button className="btn btn-warning" onClick={handleEdit}>Edit</button>
-        <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
-        <button className="btn btn-secondary" onClick={() => navigate("/entertainers")}>Back</button>
+        <div className="d-flex gap-3 justify-content-center">
+          <button className="btn btn-warning" onClick={handleEdit}>Edit</button>
+          <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+          <button className="btn btn-secondary" onClick={() => navigate("/entertainers")}>Back</button>
+        </div>
       </div>
     </div>
   );

@@ -1,21 +1,26 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function WelcomeBand() {
+  const navigate = useNavigate();
+
   return (
-    <>
-      <div className="row bg-dark text-white text-center py-4">
-        <h1>🎭 Entertainment Agency</h1>
-        <p className="lead">Discover, manage, and book top entertainers</p>
+    <header className="bg-dark text-white py-4 mb-4 w-100">
+      <div className="container text-center">
+        <h1 className="mb-2">🎭 Entertainment Agency</h1>
+        <p className="lead mb-3">Discover, manage, and book top entertainers</p>
+        <div className="d-flex justify-content-center gap-3">
+        <button className="btn btn-outline-light" onClick={() => navigate("/")}>
+            Home
+          </button>
+          <button className="btn btn-outline-light" onClick={() => navigate("/entertainers")}>
+            Entertainers
+          </button>
+          <button className="btn btn-outline-light" onClick={() => navigate("/add")}>
+            Add New
+          </button>
+        </div>
       </div>
-      <div className="bg-dark text-center py-2 mb-4">
-        <Link to="/entertainers" className="btn btn-outline-light me-2">
-          Entertainers
-        </Link>
-        <Link to="/add-entertainer" className="btn btn-outline-light">
-          Add New
-        </Link>
-      </div>
-    </>
+    </header>
   );
 }
 

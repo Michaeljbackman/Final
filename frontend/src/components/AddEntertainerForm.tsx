@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Entertainer } from "../types/Entertainer";
 import { addEntertainer } from "../api/EntertainersAPI";
-import { useNavigate } from "react-router-dom";
 
-const AddEntertainerForm = () => {
-  const navigate = useNavigate();
+// ✅ Add these props to make it work with AdminProjectsPage
+interface AddEntertainerFormProps {
+  onSuccess: () => void;
+  onCancel: () => void;
+}
 
+const AddEntertainerForm = ({ onSuccess, onCancel }: AddEntertainerFormProps) => {
   const [formData, setFormData] = useState<Entertainer>({
     entertainerID: 0,
     entStageName: "",
@@ -28,7 +31,7 @@ const AddEntertainerForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await addEntertainer(formData);
-    navigate("/entertainers");
+    onSuccess(); // ✅ call parent callback to refresh list
   };
 
   return (
@@ -61,7 +64,7 @@ const AddEntertainerForm = () => {
           <button type="submit" className="btn btn-success me-2">
             Add Entertainer
           </button>
-          <button type="button" className="btn btn-secondary" onClick={() => navigate("/entertainers")}>
+          <button type="button" className="btn btn-secondary" onClick={onCancel}>
             Cancel
           </button>
         </div>

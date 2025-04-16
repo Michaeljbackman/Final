@@ -15,6 +15,7 @@ namespace Final.API.Controllers
             _context = context;
         }
 
+        // ✅ GET summary with booking count + last booked date + pagination
         [HttpGet("AllEntertainers")]
         public IActionResult GetAllEntertainers(int pageHowMany = 5, int pageNum = 1)
         {
@@ -41,6 +42,23 @@ namespace Final.API.Controllers
                 Entertainers = pagedResults,
                 TotalEntertainers = totalEntertainers
             });
+        }
+
+        // ✅ GET full list of entertainers (for admin usage)
+        [HttpGet]
+        public IActionResult GetAllFullEntertainers()
+        {
+            try
+            {
+                var fullList = _context.Entertainers.ToList();
+                return Ok(fullList);
+            }
+            catch (Exception ex)
+            {
+                // Log to console for debugging
+                Console.WriteLine("🔥 ERROR in GetAllFullEntertainers: " + ex.Message);
+                return StatusCode(500, new { error = "Something went wrong fetching entertainers." });
+            }
         }
 
 

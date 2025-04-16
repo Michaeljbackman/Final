@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Entertainer } from "../types/Entertainer";
 import { updateEntertainer } from "../api/EntertainersAPI";
-import { useNavigate } from "react-router-dom";
 
 interface EditEntertainerFormProps {
   entertainer: Entertainer;
+  onSuccess: () => void;
+  onCancel: () => void;
 }
 
-const EditEntertainerForm = ({ entertainer }: EditEntertainerFormProps) => {
+const EditEntertainerForm = ({ entertainer, onSuccess, onCancel }: EditEntertainerFormProps) => {
   const [formData, setFormData] = useState<Entertainer>({ ...entertainer });
-  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -20,7 +20,7 @@ const EditEntertainerForm = ({ entertainer }: EditEntertainerFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await updateEntertainer(formData.entertainerID, formData);
-    navigate(`/entertainer/${formData.entertainerID}`);
+    onSuccess(); // 👈 Let AdminPage refresh the list
   };
 
   return (
@@ -56,7 +56,7 @@ const EditEntertainerForm = ({ entertainer }: EditEntertainerFormProps) => {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => navigate(`/entertainer/${formData.entertainerID}`)}
+            onClick={onCancel}
           >
             Cancel
           </button>

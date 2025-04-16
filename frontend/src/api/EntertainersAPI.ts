@@ -3,6 +3,7 @@ import { EntertainerSummary } from "../types/EntertainerSummary";
 
 const API_URL = 'https://localhost:5000/entertainers';
 
+// ✅ For summary table w/ pagination
 export const fetchEntertainers = async (
   pageSize: number,
   pageNum: number
@@ -19,15 +20,27 @@ export const fetchEntertainers = async (
       throw new Error("Failed to fetch entertainers");
     }
 
-    return await response.json(); // Must return { entertainers, totalEntertainers } from backend
+    return await response.json(); // { entertainers, totalEntertainers }
   } catch (error) {
     console.error("Error fetching entertainers: ", error);
     throw error;
   }
 };
 
+// ✅ For full data (Admin)
+export const fetchAllEntertainers = async (): Promise<Entertainer[]> => {
+  try {
+    const response = await fetch(`${API_URL}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch full entertainers");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching full entertainers: ", error);
+    throw error;
+  }
+};
 
-// ✅ Get full entertainer details by ID
 export const fetchEntertainerById = async (id: number): Promise<Entertainer> => {
   try {
     const response = await fetch(`${API_URL}/GetEntertainerDetails/${id}`);
@@ -41,7 +54,6 @@ export const fetchEntertainerById = async (id: number): Promise<Entertainer> => 
   }
 };
 
-// ✅ Add entertainer
 export const addEntertainer = async (newEntertainer: Entertainer): Promise<Entertainer> => {
   try {
     const response = await fetch(`${API_URL}/AddEntertainer`, {
@@ -61,7 +73,6 @@ export const addEntertainer = async (newEntertainer: Entertainer): Promise<Enter
   }
 };
 
-// ✅ Update entertainer
 export const updateEntertainer = async (
   id: number,
   updated: Entertainer
@@ -84,7 +95,6 @@ export const updateEntertainer = async (
   }
 };
 
-// ✅ Delete entertainer
 export const deleteEntertainer = async (id: number): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/DeleteEntertainer/${id}`, {

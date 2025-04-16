@@ -3,10 +3,22 @@ import WelcomeBand from "../components/WelcomeBand";
 
 function EntertainersPage() {
   return (
-    <div className="container mt-4">
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100vw",
+        margin: 0,
+        padding: 0,
+        backgroundColor: "#1e1e1e",
+        color: "white",
+        textAlign: "center",
+      }}
+    >
       <WelcomeBand />
-      <h2 className="text-center mb-4">Meet Our Entertainers</h2>
-      <EntertainerList />
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "2rem" }}>
+        <h2 className="mb-4">🎤 Meet Our Entertainers</h2>
+        <EntertainerList />
+      </div>
     </div>
   );
 }
