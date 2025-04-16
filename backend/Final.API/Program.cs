@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WaterProject.API.Data;
+using Final.API.Data; // ⬅️ updated namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +8,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<WaterDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("WaterConnection")));
+// ✅ Update context + connection string
+builder.Services.AddDbContext<FinalDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("AgencyConnection")));
 
-// ✅ Configure CORS properly
 builder.Services.AddCors(options => 
     options.AddPolicy("AllowReactAppBlah", policy =>
     {
@@ -25,10 +25,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ CORS middleware must be before MapControllers()
 app.UseCors("AllowReactAppBlah");
 
-// Swagger for development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -36,9 +34,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace WaterProject.API.Data;
-
-public class WaterDbContext : DbContext
+namespace Final.API.Data
 {
-    public WaterDbContext(DbContextOptions<WaterDbContext> options) : base(options)
+    public class FinalDbContext : DbContext
     {
+        public FinalDbContext(DbContextOptions<FinalDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Entertainer> Entertainers { get; set; }
     }
-    
-    public DbSet<Entertainer> Projects { get; set; }
 }

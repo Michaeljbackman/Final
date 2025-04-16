@@ -1,90 +1,110 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using WaterProject.API.Data;
+using Final.API.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace WaterProject.API.Controllers
+namespace Final.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-
-    public class WaterController : ControllerBase
+    public class EntertainersController : ControllerBase
     {
-        private WaterDbContext _waterContext;
-        public WaterController(WaterDbContext temp) => _waterContext = temp;
+        private FinalDbContext _context;
 
-        [HttpGet("AllProjects")]
-        public IActionResult GetProjects(int pageHowMany = 10, int pageNum = 1, [FromQuery] List<string>? projectTypes = null)
+        public EntertainersController(FinalDbContext context)
         {
-            IQueryable<Project> query = _waterContext.Projects.AsQueryable();
+            _context = context;
+        }
 
-            if (projectTypes != null && projectTypes.Any())
-            {
-                query = query.Where(p => projectTypes.Contains(p.ProjectType));
-            }
-            
-            var totalNumProjects = query.Count();
-
-            
-            var something = query
-                .Skip((pageNum-1) * pageHowMany)
-                .Take(pageHowMany)
+        // ✅ GET all entertainers with booking count and last booked date
+        [HttpGet("AllEntertainers")]
+        public IActionResult GetAllEntertainers()
+        {
+            var entertainers = _context.Entertainers
+                .Select(e => new
+                {
+                    e.EntertainerID,
+                    e.EntStageName,
+                    BookingCount = _context.Set<Engagement>().Count(b => b.EntertainerID == e.EntertainerID),
+                    LastBookedDate = _context.Set<Engagement>()
+                        .Where(b => b.EntertainerID == e.EntertainerID)
+                        .Max(b => (DateTime?)b.StartDate)
+                })
                 .ToList();
-            
-            var someObject = new
-            {
-                Projects = something,
-                TotalNumProjects = totalNumProjects
-            };
-            
-            return Ok(someObject);
+
+            return Ok(entertainers);
         }
 
-        [HttpGet("GetProjectTypes")]
-        public IActionResult GetProjectTypes()
+        // ✅ GET full details by ID
+        [HttpGet("GetEntertainerDetails/{id}")]
+        public IActionResult GetEntertainerDetails(int id)
         {
-            var projectTypes = _waterContext.Projects
-                .Select(p => p.ProjectType)
-                .Distinct()
-                .ToList();
-            
-            return Ok(projectTypes);
-        }
-
-        [HttpPost("AddProject")]
-        public IActionResult AddProject([FromBody]Project newProject){
-            _waterContext.Projects.Add(newProject);
-            _waterContext.SaveChanges();
-            return Ok(newProject);
-        }
-
-        [HttpPut("UpdateProject/{projectId}")]
-        public IActionResult UpdateProject(int projectId, [FromBody] Project updatedProject){
-            var existingProject = _waterContext.Projects.Find(projectId);
-
-            existingProject.ProjectName = updatedProject.ProjectName;
-            existingProject.ProjectType = updatedProject.ProjectType;
-            existingProject.ProjectRegionalProgram = updatedProject.ProjectRegionalProgram;
-            existingProject.ProjectImpact = updatedProject.ProjectImpact;
-            existingProject.ProjectPhase = updatedProject.ProjectPhase;
-            existingProject.ProjectFunctionalityStatus = updatedProject.ProjectFunctionalityStatus;
-
-            _waterContext.Projects.Update(existingProject);
-            _waterContext.SaveChanges();
-            return Ok(existingProject);
-        }
-
-        [HttpDelete("DeleteProject/{projectId}")]
-        public IActionResult DeleteProject(int projectId)
-        {
-            var project = _waterContext.Projects.Find(projectId);
-            if (project == null)
+            var entertainer = _context.Entertainers.FirstOrDefault(e => e.EntertainerID == id);
+            if (entertainer == null)
             {
-                return NotFound(new {message = "Project not found"});
+                return NotFound(new { message = "Entertainer not found" });
             }
 
-            _waterContext.Projects.Remove(project);
-            _waterContext.SaveChanges();
+            return Ok(entertainer);
+        }
+
+        // ✅ POST - Add
+        [HttpPost("AddEntertainer")]
+        public IActionResult AddEntertainer([FromBody] Entertainer newEntertainer)
+        {
+            _context.Entertainers.Add(newEntertainer);
+            _context.SaveChanges();
+
+            return Ok(newEntertainer);
+        }
+
+        // ✅ PUT - Update
+        [HttpPut("UpdateEntertainer/{id}")]
+        public IActionResult UpdateEntertainer(int id, [FromBody] Entertainer updated)
+        {
+            var existing = _context.Entertainers.Find(id);
+            if (existing == null)
+            {
+                return NotFound(new { message = "Entertainer not found" });
+            }
+
+            // Manually map fields
+            existing.EntStageName = updated.EntStageName;
+            existing.EntStreetAddress = updated.EntStreetAddress;
+            existing.EntCity = updated.EntCity;
+            existing.EntState = updated.EntState;
+            existing.EntZipCode = updated.EntZipCode;
+            existing.EntPhoneNumber = updated.EntPhoneNumber;
+            existing.EntWebPage = updated.EntWebPage;
+            existing.EntEMailAddress = updated.EntEMailAddress;
+            existing.DateEntered = updated.DateEntered;
+
+            _context.Entertainers.Update(existing);
+            _context.SaveChanges();
+
+            return Ok(existing);
+        }
+
+        // ✅ DELETE - Remove
+        [HttpDelete("DeleteEntertainer/{id}")]
+        public IActionResult DeleteEntertainer(int id)
+        {
+            var entertainer = _context.Entertainers.Find(id);
+            if (entertainer == null)
+            {
+                return NotFound(new { message = "Entertainer not found" });
+            }
+
+            _context.Entertainers.Remove(entertainer);
+            _context.SaveChanges();
             return NoContent();
         }
+
+        // 🧠 Temporary Engagement class for EF Core query
+        public class Engagement
+        {
+            public int EngagementNumber { get; set; }
+            public DateTime StartDate { get; set; }
+            public int EntertainerID { get; set; }
+        }
     }
-} 
+}
