@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "WaterProject.API/1.0.0": {
+      "Final.API/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "8.0.13",
           "Microsoft.EntityFrameworkCore": "8.0.13",
@@ -14,7 +14,7 @@
           "Swashbuckle.AspNetCore": "6.6.2"
         },
         "runtime": {
-          "WaterProject.API.dll": {}
+          "Final.API.dll": {}
         }
       },
       "Microsoft.AspNetCore.OpenApi/8.0.13": {
@@ -371,7 +371,7 @@
     }
   },
   "libraries": {
-    "WaterProject.API/1.0.0": {
+    "Final.API/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

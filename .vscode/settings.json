@@ -1,4 +1,5 @@
 {
-    "appService.defaultWebAppToDeploy": "undefined/subscriptions/abb9093a-cec7-48d5-9c21-566c06519969/resourceGroups/appsvc_windows_eastus/providers/Microsoft.Web/sites/WaterProject-Backman-Backend",
-    "appService.deploySubpath": "backend/WaterProject.API--use-controllers/publish"
-}
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/abb9093a-cec7-48d5-9c21-566c06519969/resourceGroups/appsvc_windows_eastus/providers/Microsoft.Web/sites/final-backman-backend",
+    "appService.deploySubpath": "backend/Final.API/bin/Release/net8.0/publish"
+  }
+  

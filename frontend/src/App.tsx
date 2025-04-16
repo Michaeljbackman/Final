@@ -1,5 +1,4 @@
 import './App.css';
-import { CartProvider } from './context/CartContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
@@ -11,7 +10,6 @@ import EditEntertainerPage from './pages/EditEntertainerPage';
 
 function App() {
   return (
-    <CartProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -22,7 +20,6 @@ function App() {
           <Route path="/edit-entertainer/:id" element={<EditEntertainerPage />} />
         </Routes>
       </Router>
-    </CartProvider>
   );
 }
 

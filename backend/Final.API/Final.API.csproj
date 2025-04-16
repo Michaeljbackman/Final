@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Final.API</AssemblyName> <!-- This line is new -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,10 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="WaterProject.sqlite">
+    <None Update="EntertainmentAgencyExample.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-
   </ItemGroup>
 
 </Project>

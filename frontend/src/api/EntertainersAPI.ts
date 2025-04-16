@@ -1,7 +1,7 @@
 import { Entertainer } from "../types/Entertainer";
 import { EntertainerSummary } from "../types/EntertainerSummary";
 
-const API_URL = 'https://localhost:5000/entertainers';
+const API_URL = "https://final-backman-backend-cheeg7dtepeha6da.eastus-01.azurewebsites.net/entertainers";
 
 // ✅ For summary table w/ pagination
 export const fetchEntertainers = async (
