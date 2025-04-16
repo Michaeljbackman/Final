@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Project } from "../types/Project";
-import { deleteProject, fetchProjects } from "../api/ProjectsAPI";
+import { Project } from "../types/Entertainer";
+import { deleteProject, fetchProjects } from "../api/EntertainersAPI";
 import Pagination from "../components/Pagination";
-import NewProjectForm from "../components/NewProjectForm";
-import EditProjectForm from "../components/EditProjectForm";
+import NewProjectForm from "../components/AddEntertainerForm";
+import EditProjectForm from "../components/EditEntertainerForm";
 
 const AdminProjectsPage = () => {
     const [projects, setProjects] = useState<Project[]>([]);

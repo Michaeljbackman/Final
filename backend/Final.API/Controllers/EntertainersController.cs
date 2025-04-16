@@ -15,11 +15,10 @@ namespace Final.API.Controllers
             _context = context;
         }
 
-        // ✅ GET all entertainers with booking count and last booked date
         [HttpGet("AllEntertainers")]
-        public IActionResult GetAllEntertainers()
+        public IActionResult GetAllEntertainers(int pageHowMany = 5, int pageNum = 1)
         {
-            var entertainers = _context.Entertainers
+            var query = _context.Entertainers
                 .Select(e => new
                 {
                     e.EntertainerID,
@@ -28,11 +27,22 @@ namespace Final.API.Controllers
                     LastBookedDate = _context.Set<Engagement>()
                         .Where(b => b.EntertainerID == e.EntertainerID)
                         .Max(b => (DateTime?)b.StartDate)
-                })
+                });
+
+            var totalEntertainers = query.Count();
+
+            var pagedResults = query
+                .Skip((pageNum - 1) * pageHowMany)
+                .Take(pageHowMany)
                 .ToList();
 
-            return Ok(entertainers);
+            return Ok(new
+            {
+                Entertainers = pagedResults,
+                TotalEntertainers = totalEntertainers
+            });
         }
+
 
         // ✅ GET full details by ID
         [HttpGet("GetEntertainerDetails/{id}")]
@@ -97,14 +107,6 @@ namespace Final.API.Controllers
             _context.Entertainers.Remove(entertainer);
             _context.SaveChanges();
             return NoContent();
-        }
-
-        // 🧠 Temporary Engagement class for EF Core query
-        public class Engagement
-        {
-            public int EngagementNumber { get; set; }
-            public DateTime StartDate { get; set; }
-            public int EntertainerID { get; set; }
         }
     }
 }

@@ -12,16 +12,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FinalDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("AgencyConnection")));
 
-builder.Services.AddCors(options => 
-    options.AddPolicy("AllowReactAppBlah", policy =>
+builder.Services.AddCors(options =>
     {
-        policy.WithOrigins(
-            "http://localhost:3000",
-            "https://calm-sky-0e6a9bc1e.6.azurestaticapps.net"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-    }));
+        options.AddPolicy("AllowReactAppBlah", policy =>
+        {
+            policy.WithOrigins(
+                "http://localhost:3000",
+                "https://localhost:3000"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+    });
+
 
 var app = builder.Build();
 
